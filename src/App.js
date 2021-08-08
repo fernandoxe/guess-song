@@ -1,6 +1,8 @@
+import Home from './pages/Home';
+
 const App = () => {
   return (
-    <div>Guess The Song</div>
+    <Home />
   );
 }
 

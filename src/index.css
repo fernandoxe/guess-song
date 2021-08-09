@@ -5,8 +5,9 @@ html, body {
 
 body {
   margin: 0;
-  background-color: #000;
-  color: #fff;
+  background-color: #85674d;
+  color: #e1d3bb;
+  font-family: 'Georama', sans-serif;
 }
 
 #root {

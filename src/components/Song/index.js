@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import Options from '../Options';
 import ProgressBar from '../ProgressBar';
+import config from '../../config';
 
 const Container = styled.div`
   width: 80%;
@@ -49,7 +50,7 @@ const Song = (props) => {
       <h1 className="h1">What is the song?</h1>
       <div>
         <audio
-          src={props.song}
+          src={`${config.musicpath}/${props.song}.${config.fileextension}`}
           autoPlay
           onLoadedMetadata={handleLoadedMetadata}
           onTimeUpdate={handleTimeUpdate}

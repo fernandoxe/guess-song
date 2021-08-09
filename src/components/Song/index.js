@@ -5,6 +5,9 @@ import ProgressBar from '../ProgressBar';
 
 const Container = styled.div`
   width: 80%;
+  .h1 {
+    text-align: center;
+  }
   .progress {
     height: 0.4rem;
   }
@@ -43,7 +46,7 @@ const Song = (props) => {
 
   return (
     <Container>
-      <h1>What is the song?</h1>
+      <h1 className="h1">What is the song?</h1>
       <div>
         <audio
           src={props.song}

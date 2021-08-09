@@ -17,7 +17,7 @@ const Container = styled.div`
     font-size: 0.875rem;
   }
   .clicked--correct {
-    background-color: #00ff00;
+    background-color: #66bb6a;
   }
   .clicked--incorrect {
     background-color: #ce0000;

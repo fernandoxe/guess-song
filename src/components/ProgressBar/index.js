@@ -6,7 +6,7 @@ const Container = styled.div`
   }
   .progress {
     height: 100%;
-    background-color: #fff;
+    background-color: #e1d3bb;
   }
 `;
 

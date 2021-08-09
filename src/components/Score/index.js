@@ -13,7 +13,7 @@ const Score = (props) => {
       <h2 className="h2">You hit {props.songs.length} song{props.songs.length === 1 ? '' : 's'}</h2>
       <div>
         {props.songs.map((song, i) => {
-          return `${song} ${i === props.songs.length ? '' : ' - '}`;
+          return `${song} ${i + 1 === props.songs.length ? '' : ' - '}`;
         })}
       </div>
     </Container>

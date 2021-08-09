@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import Button from '../../components/Button';
 import Game from '../../components/Game';
 
 const Container = styled.div`
@@ -20,7 +21,7 @@ const Home = () => {
   return (
     <Container>
       {!start &&
-        <button onClick={handlePlayClick}>Play</button>
+        <Button onClick={handlePlayClick} disableEffect>Play</Button>
       }
       {start &&
         <Game />

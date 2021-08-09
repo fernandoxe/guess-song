@@ -2,12 +2,16 @@ import allSongs from '../../data';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Song from '../Song';
+import Score from '../Score';
 
 const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: center;
 `;
+
+const LEVELS = 4;
+const OPTIONS = 2;
 
 const Game = () => {
   const [gameSongs, setGameSongs] = useState([]);
@@ -16,10 +20,11 @@ const Game = () => {
   const [actualOptions, setActualOptions] = useState([]);
   const [actualLevel, setActualLevel] = useState(null);
   const [successfulSongs, setSuccessfulSongs] = useState([]);
+  const [gameFinished, setGameFinished] = useState(false);
 
   useEffect(() => {
     console.log('useeffect start game');
-    const songs = getRandomSongs(20, allSongs);
+    const songs = getRandomSongs(LEVELS, allSongs);
     setGameSongs(songs);
     // setActualSongs(songs);
     setLeftSongs(songs);
@@ -41,6 +46,8 @@ const Game = () => {
 
   const finishGame = () => {
     console.log('game finished');
+    setActualSong(null);
+    setGameFinished(true);
   };
 
   const playLevel = (number) => {
@@ -54,7 +61,7 @@ const Game = () => {
   };
 
   const insertSongInOptions = (song, options) => {
-    const randomIndex = getRandomNumber(0, 4);
+    const randomIndex = getRandomNumber(0, OPTIONS);
     options.splice(randomIndex, 0, song);
   };
 
@@ -66,7 +73,7 @@ const Game = () => {
     const arrayCopy = [...array];
     const songIndex = arrayCopy.indexOf(song);
     arrayCopy.splice(songIndex, 1);
-    const randomOptions = getRandomSongs(3, arrayCopy);
+    const randomOptions = getRandomSongs(OPTIONS - 1, arrayCopy);
     return randomOptions;
   };
 
@@ -98,6 +105,9 @@ const Game = () => {
         options={actualOptions}
         onOptionSelect={handleOptionSelect}
       />}
+      {gameFinished &&
+        <Score songs={successfulSongs} />
+      }
     </Container>
   );
 };

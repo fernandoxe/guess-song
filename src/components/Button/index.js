@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -10,13 +10,17 @@ const Container = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: #fff;
+    background-color: rgba(211, 194, 154, 0.3);
+    font-family: inherit;
+    color: inherit;
+    font-style: italic;
+    font-size: 0.875rem;
   }
   .clicked--correct {
     background-color: #00ff00;
   }
   .clicked--incorrect {
-    background-color: #ff0000;
+    background-color: #ce0000;
   }
 `;
 

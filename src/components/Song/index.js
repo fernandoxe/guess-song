@@ -1,45 +1,68 @@
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
+import Options from '../Options';
+import ProgressBar from '../ProgressBar';
 
 const Container = styled.div`
   width: 80%;
+  .progress {
+    height: 0.4rem;
+  }
   .options {
     list-style-type: none;
     margin: 0;
     padding: 0;
-  }
-  .option-button {
-    width: 100%;
+
+    .option:first-child {
+      margin-top: 1rem;
+    }
+
+    .option:not(:last-child) {
+      margin-bottom: 1rem;
+    }
   }
 `;
 
 const Song = (props) => {
-  console.log(props);
+  const audioRef = useRef(null);
+  const [audioDuration, setAudioDuration] = useState(null);
+  const [audioProgress, setAudioProgress] = useState(null);
 
-  const handleOptionClick = (option) => {
+  const handleOptionSelected = (option) => {
     console.log('Successful:', option === props.song);
     props.onOptionSelect(option === props.song);
   };
 
+  const handleLoadedMetadata = () => {
+    setAudioDuration(audioRef?.current.duration);
+  };
+
+  const handleTimeUpdate = () => {
+    setAudioProgress(audioRef?.current.currentTime);
+  };
+
   return (
     <Container>
+      <h1>What is the song?</h1>
       <div>
-        {/* {props.song} */}
-        <audio src={props.song} autoPlay />
+        <audio
+          src={props.song}
+          autoPlay
+          onLoadedMetadata={handleLoadedMetadata}
+          onTimeUpdate={handleTimeUpdate}
+          ref={audioRef}
+        />
       </div>
-      <ul className="options">  
-        {props.options.map((option, i) => {
-          return (
-            <li
-              key={i}
-              onClick={() => handleOptionClick(option)}
-            >
-              <button className="option-button">
-                {option}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
+      <div className="progress">
+        { !!audioProgress && audioDuration &&
+          <ProgressBar progress={audioProgress} total={audioDuration} />
+        }
+      </div>
+      <Options
+        options={props.options}
+        song={props.song}
+        onOptionSelect={handleOptionSelected}
+      />
     </Container>
   );
 };

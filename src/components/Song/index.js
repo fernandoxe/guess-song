@@ -32,9 +32,9 @@ const Song = (props) => {
   const [audioDuration, setAudioDuration] = useState(null);
   const [audioProgress, setAudioProgress] = useState(null);
 
-  const handleOptionSelected = (option) => {
+  const handleOptionSelected = (option, optionNumber) => {
     console.log('Successful:', option === props.song);
-    props.onOptionSelect(option === props.song);
+    props.onOptionSelect(option === props.song, option, optionNumber);
   };
 
   const handleLoadedMetadata = () => {

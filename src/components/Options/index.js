@@ -4,9 +4,9 @@ import Button from '../Button';
 const Options = (props) => {
   const [disabledButtons, setDisabledButtons] = useState(false);
 
-  const handleOptionClick = (option) => {
+  const handleOptionClick = (option, optionNumber) => {
     setDisabledButtons(true);
-    props.onOptionSelect(option);
+    props.onOptionSelect(option, optionNumber);
   };
 
   return (
@@ -20,7 +20,7 @@ const Options = (props) => {
             <Button
               className="option-button"
               correct={props.song === option}
-              onClick={() => handleOptionClick(option)}
+              onClick={() => handleOptionClick(option, i)}
               disabled={disabledButtons}
             >
               {option}

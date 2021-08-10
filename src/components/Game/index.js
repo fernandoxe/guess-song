@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Song from '../Song';
 import Score from '../Score';
+import { gtm } from '../../services';
 
 const Container = styled.div`
   width: 100%;
@@ -34,6 +35,7 @@ const Game = () => {
 
   const startGame = () => {
     setActualLevel(0);
+    gtm.startGame();
   };
 
   useEffect(() => {
@@ -48,6 +50,7 @@ const Game = () => {
     console.log('game finished');
     setActualSong(null);
     setGameFinished(true);
+    gtm.endGame(0, successfulSongs.length);
   };
 
   const playLevel = (number) => {
@@ -58,6 +61,7 @@ const Game = () => {
     const options = getRandomOptions(actual, allSongs);
     insertSongInOptions(actual, options);
     setActualOptions(options);
+    gtm.startSong(number, actual);
   };
 
   const insertSongInOptions = (song, options) => {
@@ -88,7 +92,7 @@ const Game = () => {
     return songs;
   };
 
-  const handleOptionSelect = (successful) => {
+  const handleOptionSelect = (successful, option, optionNumber) => {
     if(successful) {
       setSuccessfulSongs([
         ...successfulSongs,
@@ -96,6 +100,8 @@ const Game = () => {
       ]);
     }
     setActualLevel(actualLevel + 1);
+    gtm.selectOption(optionNumber, option);
+    gtm.endSong(0, successful);
   }
 
   return (

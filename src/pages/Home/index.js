@@ -9,6 +9,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  .start-button {
+    font-style: normal;
+    font-size: 3rem;
+  }
 `;
 
 const Home = () => {
@@ -21,7 +25,9 @@ const Home = () => {
   return (
     <Container>
       {!start &&
-        <Button onClick={handlePlayClick} disableEffect>Play</Button>
+        <Button onClick={handlePlayClick} disableEffect>
+          <div className="start-button">Play</div>
+        </Button>
       }
       {start &&
         <Game />

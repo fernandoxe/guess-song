@@ -24,7 +24,6 @@ const Game = () => {
   const [gameFinished, setGameFinished] = useState(false);
 
   useEffect(() => {
-    console.log('useeffect start game');
     const songs = getRandomSongs(LEVELS, allSongs);
     setGameSongs(songs);
     // setActualSongs(songs);
@@ -39,7 +38,6 @@ const Game = () => {
   };
 
   useEffect(() => {
-    console.log('useeffect play level:', actualLevel);
     actualLevel >= 0 && leftSongs?.length && playLevel(actualLevel);
     if(leftSongs?.length === 0) {
       finishGame();
@@ -47,7 +45,6 @@ const Game = () => {
   }, [actualLevel]);
 
   const finishGame = () => {
-    console.log('game finished');
     setActualSong(null);
     setGameFinished(true);
     gtm.endGame(0, successfulSongs.length);

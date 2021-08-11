@@ -8,22 +8,11 @@ const Container = styled.div`
   width: 80%;
   .h1 {
     text-align: center;
+    margin: 1.5rem 0;
   }
   .progress {
     height: 0.4rem;
-  }
-  .options {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-
-    .option:first-child {
-      margin-top: 1rem;
-    }
-
-    .option:not(:last-child) {
-      margin-bottom: 1rem;
-    }
+    margin-bottom: 1.5rem;
   }
 `;
 

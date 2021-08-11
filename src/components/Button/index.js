@@ -14,7 +14,7 @@ const Container = styled.div`
     font-family: inherit;
     color: inherit;
     font-style: italic;
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
   .clicked--correct {
     background-color: #66bb6a;

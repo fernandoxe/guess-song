@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
   .button {
     border: none;
-    width: 100%;
     padding: 0.5rem 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -16,6 +14,12 @@ const Container = styled.div`
     font-style: italic;
     font-size: 1rem;
   }
+  .normal {
+
+  }
+  .option {
+    width: 100%;
+  }
   .clicked--correct {
     background-color: #66bb6a;
   }
@@ -25,25 +29,16 @@ const Container = styled.div`
 `;
 
 const Button = (props) => {
-  const [clicked, setClicked] = useState(false);
-
   const handleButtonClick = () => {
-    setClicked(true);
-    if(props.disableEffect) {
-      props.onClick?.();
-    } else {
-      setTimeout(() => {
-        props.onClick?.();
-        setClicked(false);
-      }, 200);
-    }
+    props.onClick?.();
   };
 
   return (
     <Container>
       <button
-        className={`button ${clicked && !props.disableEffect ? (props.correct ? 'clicked--correct' : 'clicked--incorrect') : ''}`}
+        className={`button ${props.type}`}
         onClick={handleButtonClick}
+        disabled={props.disabled}
       >
         {props.children}
       </button>

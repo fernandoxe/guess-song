@@ -5,7 +5,12 @@ import Button from '../Button';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
+
+  .share-button-container:first-child {
+    margin-bottom: 1.5rem;
+  }
+
   .share-button {
     display: flex;
     align-items: center;
@@ -24,16 +29,15 @@ const Container = styled.div`
 const Share = (props) => {
   const canvasRef = useRef(null);
   const [ctx, setCtx] = useState(null);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const ctx = canvasRef.current.getContext('2d');
     setCtx(ctx);
   }, []);
 
-  const handleButtonClick = () => {
-    canvasRef.current.width = '1080';
-    canvasRef.current.height = '1920';
+  const writeCanvas = () => {
+    canvasRef.current.width = '720';
+    canvasRef.current.height = '1280';
     let textY = 100;
     ctx.fillStyle = '#85674d';
     ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -47,24 +51,27 @@ const Share = (props) => {
 
     ctx.font = '24px Georama, sans-serif ';
     textY += 24;
-    for (let i = 0; i < 20; i++) {
-      const song = props.songs[0];
+    for (let i = 0; i < props.songs.length; i++) {
+      const song = props.songs[i];
       textY += 32;
       ctx.fillText(song,
         canvasRef.current.width / 2,
         textY
       );
     }
+  };
 
+  const handleShareClick = () => {
+    writeCanvas();
     canvasRef.current.toBlob((blob) => {
-      const url = URL.createObjectURL(blob);
-      const file = new File([blob], 'results.jpg', {type: 'image/jpg'});
+      // const url = URL.createObjectURL(blob);
+      const file = new File([blob], 'results.png', {type: 'image/png'});
       const filesArray = [file];
 
       if(navigator.canShare?.({files: filesArray})) {
         navigator.share({
           text: 'I play Guess Billie Songs and hit this score',
-          // files: filesArray,
+          files: filesArray,
           title: 'Guess Billie Songs',
           url: 'https://guessbilliesongs.com/',
         }).catch((error) => {
@@ -74,15 +81,35 @@ const Share = (props) => {
     });
   };
 
+  const handleSaveScreenshotClick = () => {
+    writeCanvas();
+    const image = canvasRef.current.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+
+    const a = document.createElement('a');
+    a.download = 'image.png';
+    a.href = image;
+    a.style.display = 'none';
+    document.querySelector('body').appendChild(a);
+    a.click();
+  };
+
   return (
     <Container>
-      <Button onClick={handleButtonClick} disableEffect>
-        <div className="share-button">
-          Share<span className="share-icon material-icons-outlined">share</span>
-        </div>
-      </Button>
+      <div className="share-button-container">
+        <Button onClick={handleShareClick} type="normal">
+          <div className="share-button">
+            Share<span className="share-icon material-icons-outlined">share</span>
+          </div>
+        </Button>
+      </div>
+      <div className="share-button-container">  
+        <Button onClick={handleSaveScreenshotClick} type="normal">
+          <div className="share-button">
+            Save screenshot<span className="share-icon material-icons-outlined">screenshot</span>
+          </div>
+        </Button>
+      </div>
       <canvas className="canvas" ref={canvasRef} />
-      <div>{error}</div>
     </Container>
   );
 };

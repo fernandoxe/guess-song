@@ -20,7 +20,7 @@ const Score = (props) => {
     <Container>
       <h2 className="h2">You hit {props.songs.length} song{props.songs.length === 1 ? '' : 's'}</h2>
       <div className="successful-songs">
-        {props.songs.map((song, i) => <div>{song}</div>)}
+        {props.songs.map((song, i) => <div key={i}>{song}</div>)}
       </div>
       <Share songs={props.songs} />
     </Container>

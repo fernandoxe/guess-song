@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 
@@ -22,6 +22,11 @@ const Options = (props) => {
     props.onOptionSelect(option, optionNumber);
   };
 
+  useEffect(() => {
+    console.log('options change');
+    setDisabledButtons(false);
+  }, [props.options]);
+
   return (
     <Container>
       <ul className="options">  
@@ -33,7 +38,8 @@ const Options = (props) => {
             >
               <Button
                 className="option-button"
-                correct={props.song === option}
+                type="option"
+                clickColor={'#66bb6a'}
                 onClick={() => handleOptionClick(option, i)}
                 disabled={disabledButtons}
               >

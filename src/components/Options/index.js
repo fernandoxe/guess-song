@@ -23,7 +23,6 @@ const Options = (props) => {
   };
 
   useEffect(() => {
-    console.log('options change');
     setDisabledButtons(false);
   }, [props.options]);
 

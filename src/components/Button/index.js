@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -8,35 +9,43 @@ const Container = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: rgba(211, 194, 154, 0.3);
+    background-color: #9d8365;
     font-family: inherit;
     color: inherit;
     font-style: italic;
     font-size: 1rem;
   }
-  .normal {
-
-  }
   .option {
     width: 100%;
   }
-  .clicked--correct {
+  .normal {
+    background-color: #d3c29a;
+    color: #9d8365;
+  }
+  .correct {
     background-color: #66bb6a;
   }
-  .clicked--incorrect {
+  .incorrect {
     background-color: #ce0000;
   }
 `;
 
 const Button = (props) => {
+  const [activeClass, setActiveClass] = useState('');
+
   const handleButtonClick = () => {
     props.onClick?.();
+    setActiveClass(props.type);
+    setTimeout(() => {
+      setActiveClass('');
+      props.onSelect();
+    }, 500);
   };
 
   return (
     <Container>
       <button
-        className={`button ${props.type}`}
+        className={`button ${props.type !== 'normal' ? 'option' : ''} ${activeClass}`}
         onClick={handleButtonClick}
         disabled={props.disabled}
       >

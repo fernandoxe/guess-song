@@ -25,7 +25,7 @@ const Home = () => {
   return (
     <Container>
       {!start &&
-        <Button onClick={handlePlayClick} type="normal">
+        <Button onSelect={handlePlayClick} type="normal">
           <div className="start-button">Play</div>
         </Button>
       }

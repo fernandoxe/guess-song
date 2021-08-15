@@ -32,4 +32,10 @@ export const gtm = {
       'event_label' : `${optionNumber} | ${option}`,
     });
   },
+  sendError: (description) => {
+    window.gtag('send', 'exception', {
+      'exDescription': description,
+      'exFatal': false,
+    });
+  },
 };

@@ -1,6 +1,9 @@
 const config = {
   musicpath: '/files',
   fileextension: 'mp3',
+  gameLevels: 2,
+  songOptions: 4,
+  pointsBase: 100,
 };
 
-module.exports = config;
+export default config;

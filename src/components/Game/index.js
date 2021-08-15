@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import Song from '../Song';
 import Score from '../Score';
+import config from '../../config';
 import { gtm } from '../../services';
 import Loader from '../Loader';
 
@@ -27,9 +28,9 @@ const getRandomSongs = (number, array) => {
   return songs;
 };
 
-const LEVELS = 2;
-const OPTIONS = 4;
-const POINTS_BASE = 100;
+const LEVELS = config.gameLevels;
+const OPTIONS = config.songOptions;
+const POINTS_BASE = config.pointsBase;
 
 const Game = (props) => {
   const [gameSongs, setGameSongs] = useState([]);

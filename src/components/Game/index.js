@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Song from '../Song';
 import Score from '../Score';
 import { gtm } from '../../services';
-// import Loader from '../Loader';
+import Loader from '../Loader';
 
 const Container = styled.div`
   width: 100%;
@@ -27,8 +27,9 @@ const getRandomSongs = (number, array) => {
   return songs;
 };
 
-const LEVELS = 4;
-const OPTIONS = 2;
+const LEVELS = 10;
+const OPTIONS = 4;
+const POINTS_BASE = 100;
 
 const Game = (props) => {
   const [gameSongs, setGameSongs] = useState([]);
@@ -37,14 +38,15 @@ const Game = (props) => {
   const [actualLevel, setActualLevel] = useState(-1);
   const [successfulSongs, setSuccessfulSongs] = useState([]);
   const [gameFinished, setGameFinished] = useState(false);
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [points, setPoints] = useState(0);
 
   useEffect(() => {
+    console.log('game init');
     startGame();
   }, []);
 
   useEffect(() => {
-    console.log('effect actualLevel or gameSongs change', actualLevel, gameSongs);
     if(actualLevel > -1) {
       const actual = gameSongs[actualLevel];
       setActualSong(actual);
@@ -55,10 +57,6 @@ const Game = (props) => {
     }
   }, [actualLevel, gameSongs]);
 
-  useEffect(() => {
-    console.log('effect actual options change', actualOptions);
-  }, [actualOptions]);
-
   const startGame = () => {
     const songs = getRandomSongs(LEVELS, allSongs);
     setGameSongs(songs);
@@ -67,7 +65,6 @@ const Game = (props) => {
   };
 
   const finishGame = () => {
-    setActualSong(null);
     setGameFinished(true);
     gtm.endGame(0, successfulSongs.length);
   };
@@ -78,7 +75,6 @@ const Game = (props) => {
   };
 
   const getRandomOptions = (song, array) => {
-    console.log('getRandomOptions', song);
     const arrayCopy = [...array];
     const songIndex = arrayCopy.indexOf(song);
     arrayCopy.splice(songIndex, 1);
@@ -86,13 +82,16 @@ const Game = (props) => {
     return randomOptions;
   };
 
-  const handleOptionSelect = (successful, option, optionNumber) => {
+  const handleOptionSelect = (successful, option, optionNumber, leftTime) => {
+    setLoading(true);
     if(successful) {
       setSuccessfulSongs([
         ...successfulSongs,
         actualSong,
       ]);
+      setPoints(points + POINTS_BASE + Math.round(leftTime * POINTS_BASE));
     }
+    setActualSong(null);
     if(actualLevel + 1 < LEVELS) {
       setActualLevel(actualLevel + 1);
     } else {
@@ -102,16 +101,29 @@ const Game = (props) => {
     gtm.endSong(0, successful);
   }
 
+  const handleLoadedSong = () => {
+    setLoading(false);
+  };
+
+  const handleScoreLoaded = () => {
+    setLoading(false);
+  };
+
   return (
     <Container>
-      {/* {loading && <Loader />} */}
+      {loading && <Loader />}
       { actualSong && <Song
         song={actualSong}
         options={actualOptions}
         onOptionSelect={handleOptionSelect}
+        onLoadedSong={handleLoadedSong}
       />}
       {gameFinished &&
-        <Score songs={successfulSongs} />
+        <Score
+          songs={successfulSongs}
+          points={points}
+          onLoaded={handleScoreLoaded}
+        />
       }
     </Container>
   );

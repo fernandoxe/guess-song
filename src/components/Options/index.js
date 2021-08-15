@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 
@@ -17,14 +17,13 @@ const Container = styled.div`
 const Options = (props) => {
   const [disabledButtons, setDisabledButtons] = useState(false);
 
-  const handleOptionClick = (option, optionNumber) => {
+  const handleOptionClick = () => {
     setDisabledButtons(true);
-    props.onOptionSelect(option, optionNumber);
   };
 
-  useEffect(() => {
-    setDisabledButtons(false);
-  }, [props.options]);
+  const handleOptionSelect = (option, optionNumber) => {
+    props.onOptionSelect(option, optionNumber);
+  };
 
   return (
     <Container>
@@ -37,9 +36,10 @@ const Options = (props) => {
             >
               <Button
                 className="option-button"
-                type="option"
+                type={props.song === option ? 'correct' : 'incorrect'}
                 clickColor={'#66bb6a'}
-                onClick={() => handleOptionClick(option, i)}
+                onClick={handleOptionClick}
+                onSelect={() => handleOptionSelect(option, i)}
                 disabled={disabledButtons}
               >
                 {option}

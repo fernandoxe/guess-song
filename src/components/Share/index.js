@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
+import { gtm } from '../../services';
 
 const Container = styled.div`
   display: flex;
@@ -26,89 +27,115 @@ const Container = styled.div`
   }
 `;
 
-const Share = (props) => {
-  const canvasRef = useRef(null);
-  const [ctx, setCtx] = useState(null);
+const writeCanvas = (canvas, songs, points) => {
+  const ctx = canvas.getContext('2d');
 
-  useEffect(() => {
-    const ctx = canvasRef.current.getContext('2d');
-    setCtx(ctx);
-  }, []);
+  const titleSize = 48
+  const pointsSize = 36;
+  const songSize = 32;
+  const lineSize = 36;
+  let textY = lineSize + titleSize;
+  canvas.width = 720;
+  canvas.height = lineSize + titleSize + lineSize + pointsSize + lineSize + songs.length * lineSize + lineSize * 2;
+  ctx.fillStyle = '#85674d';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.font = `bold ${titleSize}px Georama, sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#e1d3bb';
+  ctx.fillText(`You hit ${songs.length} song${songs.length === 1 ? '' : 's'}`,
+    canvas.width / 2,
+    textY
+  );
 
-  const writeCanvas = () => {
-    canvasRef.current.width = '720';
-    canvasRef.current.height = '1280';
-    let textY = 100;
-    ctx.fillStyle = '#85674d';
-    ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    ctx.font = 'bold 48px Georama, sans-serif ';
-    ctx.textAlign = 'center';
-    ctx.fillStyle = '#e1d3bb';
-    ctx.fillText(`You hit ${props.songs.length} song${props.songs.length === 1 ? '' : 's'}`,
-      canvasRef.current.width / 2,
+  ctx.font = `bold ${pointsSize}px Georama, sans-serif`;
+  textY += lineSize + pointsSize;
+  ctx.fillText(`Total points: ${points}`,
+    canvas.width / 2,
+    textY
+  );
+
+  ctx.font = `italic ${songSize}px Georama, sans-serif`;
+  textY += lineSize;
+  for (let i = 0; i < songs.length; i++) {
+    const song = songs[i];
+    textY += lineSize;
+    ctx.fillText(song,
+      canvas.width / 2,
       textY
     );
+  }
+};
 
-    ctx.font = '24px Georama, sans-serif ';
-    textY += 24;
-    for (let i = 0; i < props.songs.length; i++) {
-      const song = props.songs[i];
-      textY += 32;
-      ctx.fillText(song,
-        canvasRef.current.width / 2,
-        textY
-      );
+const Share = (props) => {
+  const canvasRef = useRef(null);
+  const [file, setFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const { songs, points, onCanvasRendered } = props;
+
+  useEffect(() => {
+    console.log('share init');
+
+    const canvas = canvasRef.current;
+
+    writeCanvas(canvas, songs, points);
+
+    if(canvas.toBlob) {
+      canvas.toBlob((blob) => {
+        const fileFromBlob = new File([blob], 'results.png', {type: 'image/png'});
+        setFile(fileFromBlob);
+      });
+    }
+
+    if(canvas.toDataURL) {
+      const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      setImageUrl(image);
+    }
+
+    onCanvasRendered();
+
+  }, [songs, points, onCanvasRendered]);
+
+  const handleShareClick = () => {
+    if(navigator.canShare?.({files: [file]})) {
+      navigator.share({
+        text: 'I play Guess Billie Songs and hit this score',
+        files: [file],
+        title: 'Guess Billie Songs',
+        url: 'https://guessbilliesongs.com/',
+      }).catch((error) => {
+        console.log(error);
+        gtm.sendError(error.message);
+      });
     }
   };
 
-  const handleShareClick = () => {
-    writeCanvas();
-    canvasRef.current.toBlob((blob) => {
-      // const url = URL.createObjectURL(blob);
-      const file = new File([blob], 'results.png', {type: 'image/png'});
-      const filesArray = [file];
-
-      if(navigator.canShare?.({files: filesArray})) {
-        navigator.share({
-          text: 'I play Guess Billie Songs and hit this score',
-          files: filesArray,
-          title: 'Guess Billie Songs',
-          url: 'https://guessbilliesongs.com/',
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
-    });
-  };
-
   const handleSaveScreenshotClick = () => {
-    writeCanvas();
-    const image = canvasRef.current.toDataURL('image/png').replace('image/png', 'image/octet-stream');
-
     const a = document.createElement('a');
-    a.download = 'image.png';
-    a.href = image;
-    a.style.display = 'none';
-    document.querySelector('body').appendChild(a);
+    a.download = 'results.png';
+    a.href = imageUrl;
     a.click();
   };
 
   return (
     <Container>
-      <div className="share-button-container">
-        <Button onClick={handleShareClick} type="normal">
-          <div className="share-button">
-            Share<span className="share-icon material-icons-outlined">share</span>
-          </div>
-        </Button>
-      </div>
-      <div className="share-button-container">  
-        <Button onClick={handleSaveScreenshotClick} type="normal">
-          <div className="share-button">
-            Save screenshot<span className="share-icon material-icons-outlined">screenshot</span>
-          </div>
-        </Button>
-      </div>
+      { file &&
+        <div className="share-button-container">
+            <Button onSelect={handleShareClick} type="normal">
+              <div className="share-button">
+                Share<span className="share-icon material-icons-outlined">share</span>
+              </div>
+            </Button>
+        </div>
+      }
+      { imageUrl &&
+        <div className="share-button-container">  
+          <Button onSelect={handleSaveScreenshotClick} type="normal">
+            <div className="share-button">
+              Save screenshot<span className="share-icon material-icons-outlined">screenshot</span>
+            </div>
+          </Button>
+        </div>
+      }
       <canvas className="canvas" ref={canvasRef} />
     </Container>
   );

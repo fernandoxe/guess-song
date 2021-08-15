@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Share from '../Share';
 
@@ -17,17 +18,20 @@ const Container = styled.div`
 `;
 
 const Score = (props) => {
+  const { t } = useTranslation();
   const handleCanvasRendered = () => {
     props.onLoaded();
   };
 
   return (
     <Container>
-      <h2 className="h2">You hit {props.songs.length} song{props.songs.length === 1 ? '' : 's'}</h2>
-      <h3 className="h3">Total points: {props.points}</h3>
-      <div className="successful-songs">
-        {props.songs.map((song, i) => <div key={i}>{song}</div>)}
-      </div>
+      <h2 className="h2">{t('You guessed X songs', {count: props.songs.length})}</h2>
+      <h3 className="h3">{t('Total score', {count: props.points})}</h3>
+      {props.songs.length > 0 &&
+        <div className="successful-songs">
+          {props.songs.map((song, i) => <div key={i}>{song}</div>)}
+        </div>
+      }
       <Share
         songs={props.songs}
         points={props.points}

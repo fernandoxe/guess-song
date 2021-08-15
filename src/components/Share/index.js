@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
 import { gtm } from '../../services';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   display: flex;
@@ -27,7 +28,7 @@ const Container = styled.div`
   }
 `;
 
-const writeCanvas = (canvas, songs, points) => {
+const writeCanvas = (canvas, songs, guessedText, pointsText) => {
   const ctx = canvas.getContext('2d');
 
   const titleSize = 48
@@ -42,14 +43,14 @@ const writeCanvas = (canvas, songs, points) => {
   ctx.font = `bold ${titleSize}px Georama, sans-serif`;
   ctx.textAlign = 'center';
   ctx.fillStyle = '#e1d3bb';
-  ctx.fillText(`You hit ${songs.length} song${songs.length === 1 ? '' : 's'}`,
+  ctx.fillText(guessedText,
     canvas.width / 2,
     textY
   );
 
   ctx.font = `bold ${pointsSize}px Georama, sans-serif`;
   textY += lineSize + pointsSize;
-  ctx.fillText(`Total points: ${points}`,
+  ctx.fillText(pointsText,
     canvas.width / 2,
     textY
   );
@@ -67,6 +68,7 @@ const writeCanvas = (canvas, songs, points) => {
 };
 
 const Share = (props) => {
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
@@ -77,7 +79,12 @@ const Share = (props) => {
 
     const canvas = canvasRef.current;
 
-    writeCanvas(canvas, songs, points);
+    writeCanvas(
+      canvas,
+      songs,
+      t('You guessed X songs', {count: songs.length}),
+      t('Total score', {count: points})
+    );
 
     if(canvas.toBlob) {
       canvas.toBlob((blob) => {
@@ -93,7 +100,7 @@ const Share = (props) => {
 
     onCanvasRendered();
 
-  }, [songs, points, onCanvasRendered]);
+  }, [songs, points, onCanvasRendered, t]);
 
   const handleShareClick = () => {
     if(navigator.canShare?.({files: [file]})) {
@@ -122,7 +129,7 @@ const Share = (props) => {
         <div className="share-button-container">
             <Button onSelect={handleShareClick} type="normal">
               <div className="share-button">
-                Share<span className="share-icon material-icons-outlined">share</span>
+                {t('Share')}<span className="share-icon material-icons-outlined">share</span>
               </div>
             </Button>
         </div>
@@ -131,7 +138,7 @@ const Share = (props) => {
         <div className="share-button-container">  
           <Button onSelect={handleSaveScreenshotClick} type="normal">
             <div className="share-button">
-              Save screenshot<span className="share-icon material-icons-outlined">screenshot</span>
+            {t('Save screenshot')}<span className="share-icon material-icons-outlined">screenshot</span>
             </div>
           </Button>
         </div>

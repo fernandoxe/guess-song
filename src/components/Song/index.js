@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Options from '../Options';
 import ProgressBar from '../ProgressBar';
 import config from '../../config';
+import { useTranslation } from 'react-i18next';
 
 const Container = styled.div`
   width: 80%;
@@ -17,6 +18,7 @@ const Container = styled.div`
 `;
 
 const Song = (props) => {
+  const { t } = useTranslation();
   const audioRef = useRef(null);
   const [audioDuration, setAudioDuration] = useState(null);
   const [audioProgress, setAudioProgress] = useState(null);
@@ -38,7 +40,7 @@ const Song = (props) => {
 
   return (
     <Container>
-      <h1 className="h1">What is the song?</h1>
+      <h1 className="h1">{t('What is this song?')}</h1>
       <div>
         <audio
           src={`${config.musicpath}/${props.song}.${config.fileextension}`}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import Button from '../../components/Button';
 import Game from '../../components/Game';
@@ -16,6 +17,7 @@ const Container = styled.div`
 `;
 
 const Home = () => {
+  const { t } = useTranslation();
   const [start, setStart] = useState(false);
 
   const handlePlayClick = () => {
@@ -26,7 +28,7 @@ const Home = () => {
     <Container>
       {!start &&
         <Button onSelect={handlePlayClick} type="normal">
-          <div className="start-button">Play</div>
+          <div className="start-button">{t('Play')}</div>
         </Button>
       }
       {start &&

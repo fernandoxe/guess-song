@@ -5,13 +5,23 @@ const resources = {
   en: {
     translation: {
       'Play': 'Play',
-      'What is the song?': 'What is the song?',
+      'What is this song?': 'What is this song?',
+      'You guessed X songs': 'Yo guessed {{count}} song',
+      'You guessed X songs_plural': 'Yo guessed {{count}} songs',
+      'Total score': 'Total score: {{count}}',
+      'Share': 'Share',
+      'Save screenshot': 'Save screenshot',
     },
   },
   es: {
     translation: {
       'Play': 'Jugar',
-      'What is the song?': 'Qué canción es?',
+      'What is this song?': 'Qué canción es esta?',
+      'You guessed X songs': 'Adivinaste {{count}} canción',
+      'You guessed X songs_plural': 'Adivinaste {{count}} canciones',
+      'Total score': 'Puntos totales: {{count}}',
+      'Share': 'Compartir',
+      'Save screenshot': 'Guardar captura',
     },
   },
 };

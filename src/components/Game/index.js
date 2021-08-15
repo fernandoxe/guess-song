@@ -27,7 +27,7 @@ const getRandomSongs = (number, array) => {
   return songs;
 };
 
-const LEVELS = 10;
+const LEVELS = 2;
 const OPTIONS = 4;
 const POINTS_BASE = 100;
 

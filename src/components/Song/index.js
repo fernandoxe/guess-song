@@ -23,11 +23,13 @@ const Song = (props) => {
 
   const handleOptionSelected = (option, optionNumber) => {
     console.log('Successful:', option === props.song);
-    props.onOptionSelect(option === props.song, option, optionNumber);
+    const leftTime = audioRef.current.duration - audioRef.current.currentTime;
+    props.onOptionSelect(option === props.song, option, optionNumber, leftTime);
   };
 
   const handleLoadedMetadata = () => {
     setAudioDuration(audioRef?.current.duration);
+    props.onLoadedSong();
   };
 
   const handleTimeUpdate = () => {

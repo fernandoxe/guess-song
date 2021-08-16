@@ -4,6 +4,7 @@ import Share from '../Share';
 
 const Container = styled.div`
   width: 80%;
+  max-height: 100vh;
   .h2, .h3 {
     text-align: center;
     margin: 1.5rem 0;

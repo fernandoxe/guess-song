@@ -5,9 +5,19 @@ html, body {
 
 body {
   margin: 0;
-  background-color: #85674d;
+  background-color: #87684c;
   color: #e1d3bb;
   font-family: 'Georama', sans-serif;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(img/background.jpg) 53% center/cover no-repeat fixed;
+  z-index: -1;
 }
 
 #root {

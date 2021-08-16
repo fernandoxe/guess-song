@@ -32,7 +32,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'es',
+    lng: navigator.language.startsWith('es') ? 'es': 'en',
     interpolation: {
       escapeValue: false,
     },

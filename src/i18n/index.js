@@ -11,6 +11,7 @@ const resources = {
       'Total score': 'Total score: {{count}}',
       'Share': 'Share',
       'Save screenshot': 'Save screenshot',
+      'My score': `My score in ${process.env.REACT_APP_TITLE}`
     },
   },
   es: {
@@ -22,6 +23,7 @@ const resources = {
       'Total score': 'Puntos totales: {{count}}',
       'Share': 'Compartir',
       'Save screenshot': 'Guardar captura',
+      'My score': `Mi puntaje en ${process.env.REACT_APP_TITLE}`
     },
   },
 };

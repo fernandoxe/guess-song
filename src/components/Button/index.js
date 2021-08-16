@@ -14,6 +14,7 @@ const Container = styled.div`
     color: inherit;
     font-style: italic;
     font-size: 1rem;
+    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
   }
   .option {
     width: 100%;

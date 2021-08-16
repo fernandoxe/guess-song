@@ -9,7 +9,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 
-  .share-button-container:first-child {
+  .share-button-container {
     margin-bottom: 1.5rem;
   }
 
@@ -91,11 +91,15 @@ const Share = (props) => {
         const fileFromBlob = new File([blob], 'results.png', {type: 'image/png'});
         setFile(fileFromBlob);
       });
+    } else {
+      gtm.sendError('Can\'t create canvas.toBlob');
     }
 
     if(canvas.toDataURL) {
       const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
       setImageUrl(image);
+    } else {
+      gtm.sendError('Can\'t create canvas.toDataUrl');
     }
 
     onCanvasRendered();
@@ -103,24 +107,37 @@ const Share = (props) => {
   }, [songs, points, onCanvasRendered, t]);
 
   const handleShareClick = () => {
+    gtm.share();
     if(navigator.canShare?.({files: [file]})) {
       navigator.share({
-        text: 'I play Guess Billie Songs and hit this score',
+        text: t('My score'),
         files: [file],
-        title: 'Guess Billie Songs',
-        url: 'https://guessbilliesongs.com/',
-      }).catch((error) => {
+        title: process.env.REACT_APP_TITLE,
+        url: process.env.REACT_APP_URL,
+      })
+      .then(() => {
+        gtm.shareSuccessful();
+      })
+      .catch((error) => {
         console.log(error);
         gtm.sendError(error.message);
       });
+    } else {
+      gtm.sendError(`Navigator can't share${navigator.canShare?.() ? '' : ' files'}`);
     }
   };
 
   const handleSaveScreenshotClick = () => {
-    const a = document.createElement('a');
-    a.download = 'results.png';
-    a.href = imageUrl;
-    a.click();
+    try {
+      const a = document.createElement('a');
+      a.download = 'results.png';
+      a.href = imageUrl;
+      a.click();
+      gtm.saveScreenshot();
+    } catch(error) {
+      console.log(error);
+      gtm.sendError(error.message);
+    }
   };
 
   return (

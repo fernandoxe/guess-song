@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import { gtm } from '../../services';
 import { useTranslation } from 'react-i18next';
+import background from '../../img/background.jpg';
 
 const Container = styled.div`
   display: flex;
@@ -23,12 +24,12 @@ const Container = styled.div`
     margin-left: 0.5rem;
     font-size: 1.5rem;
   }
-  .canvas {
+  .canvas, .image {
     display: none;
   }
 `;
 
-const writeCanvas = (canvas, songs, guessedText, pointsText) => {
+const writeCanvas = (canvas, songs, image, guessedText, pointsText) => {
   const ctx = canvas.getContext('2d');
 
   const titleSize = 48
@@ -40,6 +41,9 @@ const writeCanvas = (canvas, songs, guessedText, pointsText) => {
   canvas.height = lineSize + titleSize + lineSize + pointsSize + lineSize + songs.length * lineSize + lineSize * 2;
   ctx.fillStyle = '#85674d';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.drawImage(image, 0, -148, 720, 1280);
+
   ctx.font = `bold ${titleSize}px Georama, sans-serif`;
   ctx.textAlign = 'center';
   ctx.fillStyle = '#e1d3bb';
@@ -70,6 +74,7 @@ const writeCanvas = (canvas, songs, guessedText, pointsText) => {
 const Share = (props) => {
   const { t } = useTranslation();
   const canvasRef = useRef(null);
+  const imageRef = useRef(null);
   const [file, setFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
   const { songs, points, onCanvasRendered } = props;
@@ -82,13 +87,14 @@ const Share = (props) => {
     writeCanvas(
       canvas,
       songs,
+      imageRef.current,
       t('You guessed X songs', {count: songs.length}),
       t('Total score', {count: points})
     );
 
     if(canvas.toBlob) {
       canvas.toBlob((blob) => {
-        const fileFromBlob = new File([blob], 'results.png', {type: 'image/png'});
+        const fileFromBlob = new File([blob], 'results.jpg', {type: 'image/jpeg'});
         setFile(fileFromBlob);
       });
     } else {
@@ -96,7 +102,7 @@ const Share = (props) => {
     }
 
     if(canvas.toDataURL) {
-      const image = canvas.toDataURL('image/png').replace('image/png', 'image/octet-stream');
+      const image = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
       setImageUrl(image);
     } else {
       gtm.sendError('Can\'t create canvas.toDataUrl');
@@ -130,7 +136,7 @@ const Share = (props) => {
   const handleSaveScreenshotClick = () => {
     try {
       const a = document.createElement('a');
-      a.download = 'results.png';
+      a.download = 'results.jpg';
       a.href = imageUrl;
       a.click();
       gtm.saveScreenshot();
@@ -161,6 +167,12 @@ const Share = (props) => {
         </div>
       }
       <canvas className="canvas" ref={canvasRef} />
+      <img
+        className="image"
+        src={background}
+        alt=""
+        ref={imageRef}
+      />
     </Container>
   );
 };

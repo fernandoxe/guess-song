@@ -26,3 +26,16 @@ data
 public/files
 .env
 .vercel
+
+public/android-chrome-192x192.png
+public/android-chrome-512x512.png
+public/apple-touch-icon.png
+public/browserconfig.xml
+public/favicon-16x16.png
+public/favicon-32x32.png
+public/favicon.ico
+public/manifest.json
+public/mstile-150x150.png
+public/og-image-192x192.png
+public/safari-pinned-tab.svg
+src/img/background.jpg

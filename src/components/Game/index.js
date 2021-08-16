@@ -66,9 +66,14 @@ const Game = (props) => {
     gtm.startGame();
   };
 
+  useEffect(() => {
+    if(gameFinished) {
+      gtm.endGame(points, successfulSongs.length);
+    }
+  }, [gameFinished, points, successfulSongs.length]);
+
   const finishGame = () => {
     setGameFinished(true);
-    gtm.endGame(0, successfulSongs.length);
   };
 
   const insertSongInOptions = (song, options) => {
@@ -86,12 +91,13 @@ const Game = (props) => {
 
   const handleOptionSelect = (successful, option, optionNumber, leftTime) => {
     setLoading(true);
+    const songPoints = POINTS_BASE + Math.round(leftTime * POINTS_BASE);
     if(successful) {
       setSuccessfulSongs([
         ...successfulSongs,
         actualSong,
       ]);
-      setPoints(points + POINTS_BASE + Math.round(leftTime * POINTS_BASE));
+      setPoints(points + songPoints);
     }
     setActualSong(null);
     if(actualLevel + 1 < LEVELS) {
@@ -100,7 +106,7 @@ const Game = (props) => {
       finishGame();
     }
     gtm.selectOption(optionNumber, option);
-    gtm.endSong(0, successful);
+    gtm.endSong(songPoints, successful);
   }
 
   const handleLoadedSong = () => {

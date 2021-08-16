@@ -6,8 +6,8 @@ const resources = {
     translation: {
       'Play': 'Play',
       'What is this song?': 'What is this song?',
-      'You guessed X songs': 'Yo guessed {{count}} song',
-      'You guessed X songs_plural': 'Yo guessed {{count}} songs',
+      'X guessed songs': '{{count}} guessed song',
+      'X guessed songs_plural': '{{count}} guessed songs',
       'Total score': 'Total score: {{count}}',
       'Share': 'Share',
       'Save screenshot': 'Save screenshot',
@@ -18,9 +18,9 @@ const resources = {
     translation: {
       'Play': 'Jugar',
       'What is this song?': 'Qué canción es esta?',
-      'You guessed X songs': 'Adivinaste {{count}} canción',
-      'You guessed X songs_plural': 'Adivinaste {{count}} canciones',
-      'Total score': 'Puntos totales: {{count}}',
+      'X guessed songs': '{{count}} canción adivinada',
+      'X guessed songs_plural': '{{count}} canciones adivinadas',
+      'Total score': 'Puntaje total: {{count}}',
       'Share': 'Compartir',
       'Save screenshot': 'Guardar captura',
       'My score': `Mi puntaje en ${process.env.REACT_APP_TITLE}`

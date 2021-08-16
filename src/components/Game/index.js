@@ -6,6 +6,7 @@ import Score from '../Score';
 import config from '../../config';
 import { gtm } from '../../services';
 import Loader from '../Loader';
+import ActualScore from '../ActualScore';
 
 const Container = styled.div`
   width: 100%;
@@ -113,6 +114,9 @@ const Game = (props) => {
   return (
     <Container>
       {loading && <Loader />}
+      {!gameFinished &&
+        <ActualScore songs={successfulSongs.length} score={points} />
+      }
       { actualSong && <Song
         song={actualSong}
         options={actualOptions}

@@ -13,7 +13,7 @@ const Container = styled.div`
     font-family: inherit;
     color: inherit;
     font-style: italic;
-    font-size: 1rem;
+    font-size: 1.125rem;
     box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
   }
   .option {

@@ -26,6 +26,25 @@ export const gtm = {
       'non_interaction': true,
     });
   },
+  share: () => {
+    window.gtag('event', 'Click share', {
+      'event_category' : 'Share',
+      'event_label' : `Share`,
+    });
+  },
+  shareSuccessful: () => {
+    window.gtag('event', 'Share successful', {
+      'event_category' : 'Share',
+      'event_label' : `Share`,
+      'non_interaction': true,
+    });
+  },
+  saveScreenshot: () => {
+    window.gtag('event', 'Click save screenshot', {
+      'event_category' : 'Share',
+      'event_label' : `Save screenshot`,
+    });
+  },
   selectOption: (optionNumber, option) => {
     window.gtag('event', 'Select option', {
       'event_category' : 'Song',

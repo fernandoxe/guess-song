@@ -1,4 +1,5 @@
 import styled, { keyframes } from 'styled-components';
+import background from '../../img/background.jpg';
 
 const rotate = keyframes`
   from {
@@ -19,6 +20,7 @@ const Container = styled.div`
     align-items: center;
     justify-content: center;
     background-color: #85674d;
+    background: #85674d url(${background}) 53% center/cover no-repeat fixed;
   .circle {
     width: 3rem;
     height: 3rem;

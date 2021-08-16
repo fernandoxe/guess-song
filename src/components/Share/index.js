@@ -88,7 +88,7 @@ const Share = (props) => {
       canvas,
       songs,
       imageRef.current,
-      t('You guessed X songs', {count: songs.length}),
+      t('X guessed songs', {count: songs.length}),
       t('Total score', {count: points})
     );
 

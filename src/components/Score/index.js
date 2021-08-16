@@ -26,7 +26,7 @@ const Score = (props) => {
 
   return (
     <Container>
-      <h2 className="h2">{t('You guessed X songs', {count: props.songs.length})}</h2>
+      <h2 className="h2">{t('X guessed songs', {count: props.songs.length})}</h2>
       <h3 className="h3">{t('Total score', {count: props.points})}</h3>
       {props.songs.length > 0 &&
         <div className="successful-songs">

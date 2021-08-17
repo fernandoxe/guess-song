@@ -89,8 +89,7 @@ const Game = (props) => {
     return randomOptions;
   };
 
-  const handleOptionSelect = (successful, option, optionNumber, leftTime) => {
-    setLoading(true);
+  const handleOptionClick = (successful, option, optionNumber, leftTime) => {
     const songPoints = POINTS_BASE + Math.round(leftTime * POINTS_BASE);
     if(successful) {
       setSuccessfulSongs([
@@ -99,15 +98,19 @@ const Game = (props) => {
       ]);
       setPoints(points + songPoints);
     }
+    gtm.selectOption(optionNumber, option);
+    gtm.endSong(songPoints, successful);
+  };
+
+  const handleOptionSelect = () => {
+    setLoading(true);
     setActualSong(null);
     if(actualLevel + 1 < LEVELS) {
       setActualLevel(actualLevel + 1);
     } else {
       finishGame();
     }
-    gtm.selectOption(optionNumber, option);
-    gtm.endSong(songPoints, successful);
-  }
+  };
 
   const handleLoadedSong = () => {
     setLoading(false);
@@ -126,6 +129,7 @@ const Game = (props) => {
       { actualSong && <Song
         song={actualSong}
         options={actualOptions}
+        onOptionClick={handleOptionClick}
         onOptionSelect={handleOptionSelect}
         onLoadedSong={handleLoadedSong}
       />}

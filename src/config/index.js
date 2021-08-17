@@ -1,7 +1,7 @@
 const config = {
   musicpath: '/files',
   fileextension: 'mp3',
-  gameLevels: 2,
+  gameLevels: 15,
   songOptions: 4,
   pointsBase: 100,
 };

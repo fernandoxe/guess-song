@@ -51,10 +51,15 @@ export const gtm = {
       'event_label' : `${optionNumber} | ${option}`,
     });
   },
-  sendError: (description) => {
+  sendError: (action, description) => {
     window.gtag('send', 'exception', {
       'exDescription': description,
       'exFatal': false,
+    });
+    window.gtag('event', action, {
+      'event_category' : 'Error',
+      'event_label' : description,
+      'non_interaction': true,
     });
   },
 };

@@ -98,14 +98,14 @@ const Share = (props) => {
         setFile(fileFromBlob);
       });
     } else {
-      gtm.sendError('Can\'t create canvas.toBlob');
+      gtm.sendError('canvas.toBlob', 'Can\'t create canvas.toBlob');
     }
 
     if(canvas.toDataURL) {
       const image = canvas.toDataURL('image/jpeg').replace('image/jpeg', 'image/octet-stream');
       setImageUrl(image);
     } else {
-      gtm.sendError('Can\'t create canvas.toDataUrl');
+      gtm.sendError('canvas.toDataURL', 'Can\'t create canvas.toDataUrl');
     }
 
     onCanvasRendered();
@@ -126,10 +126,10 @@ const Share = (props) => {
       })
       .catch((error) => {
         console.log(error);
-        gtm.sendError(error.message);
+        gtm.sendError('Share', error.message);
       });
     } else {
-      gtm.sendError(`Navigator can't share${navigator.canShare?.() ? '' : ' files'}`);
+      gtm.sendError('navigator.canShare', `Navigator can't share${navigator.canShare?.() ? '' : ' files'}`);
     }
   };
 
@@ -142,7 +142,7 @@ const Share = (props) => {
       gtm.saveScreenshot();
     } catch(error) {
       console.log(error);
-      gtm.sendError(error.message);
+      gtm.sendError('Save Screenshot', error.message);
     }
   };
 

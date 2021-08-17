@@ -16,6 +16,11 @@
           'exDescription': message,
           'exFatal': false,
         });
+        window.gtag('event', 'Global', {
+          'event_category' : 'Error',
+          'event_label' : message,
+          'non_interaction': true,
+        });
       };
     </script>
     <meta charset="utf-8" />

@@ -23,10 +23,15 @@ const Song = (props) => {
   const [audioDuration, setAudioDuration] = useState(null);
   const [audioProgress, setAudioProgress] = useState(null);
 
-  const handleOptionSelected = (option, optionNumber) => {
+  const handleOptionClick = (option, optionNumber) => {
     console.log('Successful:', option === props.song);
     const leftTime = audioRef.current.duration - audioRef.current.currentTime;
-    props.onOptionSelect(option === props.song, option, optionNumber, leftTime);
+    audioRef.current.pause();
+    props.onOptionClick(option === props.song, option, optionNumber, leftTime);
+  };
+
+  const handleOptionSelected = () => {
+    props.onOptionSelect();
   };
 
   const handleLoadedMetadata = () => {
@@ -58,6 +63,7 @@ const Song = (props) => {
       <Options
         options={props.options}
         song={props.song}
+        onOptionClick={handleOptionClick}
         onOptionSelect={handleOptionSelected}
       />
     </Container>

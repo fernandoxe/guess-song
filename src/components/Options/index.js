@@ -17,12 +17,13 @@ const Container = styled.div`
 const Options = (props) => {
   const [disabledButtons, setDisabledButtons] = useState(false);
 
-  const handleOptionClick = () => {
+  const handleOptionClick = (option, optionNumber) => {
+    props.onOptionClick(option, optionNumber);
     setDisabledButtons(true);
   };
 
-  const handleOptionSelect = (option, optionNumber) => {
-    props.onOptionSelect(option, optionNumber);
+  const handleOptionSelect = () => {
+    props.onOptionSelect();
   };
 
   return (
@@ -38,8 +39,8 @@ const Options = (props) => {
                 className="option-button"
                 type={props.song === option ? 'correct' : 'incorrect'}
                 clickColor={'#66bb6a'}
-                onClick={handleOptionClick}
-                onSelect={() => handleOptionSelect(option, i)}
+                onClick={() => handleOptionClick(option, i)}
+                onSelect={handleOptionSelect}
                 disabled={disabledButtons}
               >
                 {option}

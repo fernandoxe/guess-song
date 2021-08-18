@@ -9,7 +9,7 @@ const Container = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: #9d8365;
+    background-color: ${props => props.theme.primaryColor};
     font-family: inherit;
     color: inherit;
     font-style: italic;
@@ -20,14 +20,14 @@ const Container = styled.div`
     width: 100%;
   }
   .normal {
-    background-color: #d3c29a;
-    color: #9d8365;
+    background-color: ${props => props.theme.secondaryColor};
+    color: ${props => props.theme.primaryColor};
   }
   .correct {
-    background-color: #66bb6a;
+    background-color: ${props => props.theme.successfulColor};
   }
   .incorrect {
-    background-color: #ce0000;
+    background-color: ${props => props.theme.errorColor};
   }
 `;
 

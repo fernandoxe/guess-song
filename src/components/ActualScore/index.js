@@ -6,7 +6,7 @@ const Container = styled.div`
   top: 1.5rem;
   right: 10%;
   font-size: 1rem;
-  line-height: 1.5rem;
+  line-height: 1.1rem;
   text-align: right;
 `;
 
@@ -15,8 +15,13 @@ const ActualScore = (props) => {
 
   return (
     <Container>
-      <div>{t('X guessed songs', {count: props.songs})}</div>
-      <div>{t('Total score', {count: props.score})}</div>
+      {!props.gameFinished &&
+        <>
+          <div>{t('X guessed songs', {count: props.songs})}</div>
+          <div>{t('Total score', {count: props.score})}</div>
+        </>
+      }
+      <div>{t('High score', {count: props.highScore})}</div>
     </Container>
   );
 };

@@ -1,6 +1,6 @@
 import allSongs from '../../data';
 import styled from 'styled-components';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Song from '../Song';
 import Score from '../Score';
 import config from '../../config';
@@ -42,35 +42,64 @@ const Game = (props) => {
   const [gameFinished, setGameFinished] = useState(false);
   const [loading, setLoading] = useState(true);
   const [points, setPoints] = useState(0);
+  const audioRef = useRef(new Audio());
+  const [audioDuration, setAudioDuration] = useState(null);
+  const [audioCurrentTime, setAudioCurrentTime] = useState(null);
+  const [highScore, setHighScore] = useState(0);
+
+  const startGame = useCallback(() => {
+    console.log('start game');
+
+    const hs = localStorage.getItem('highScore');
+    hs && setHighScore(hs);
+
+    const songs = getRandomSongs(LEVELS, allSongs);
+    setGameSongs(songs);
+    setActualLevel(0);
+
+    audioRef.current.onloadedmetadata = handleLoadedSong;
+    audioRef.current.ontimeupdate = handleTimeUpdate;
+
+    gtm.startGame();
+  }, []);
 
   useEffect(() => {
     console.log('game init');
     startGame();
-  }, []);
+  }, [startGame]);
 
   useEffect(() => {
+    console.log('start new level', actualLevel);
     if(actualLevel > -1) {
       const actual = gameSongs[actualLevel];
       setActualSong(actual);
       const options = getRandomOptions(actual, allSongs);
       insertSongInOptions(actual, options);
       setActualOptions(options);
+
+      audioRef.current.src = `${config.musicpath}/${actual}.${config.fileextension}`;
+
       gtm.startSong(actualLevel, actual);
     }
   }, [actualLevel, gameSongs]);
 
-  const startGame = () => {
-    const songs = getRandomSongs(LEVELS, allSongs);
-    setGameSongs(songs);
-    setActualLevel(0);
-    gtm.startGame();
-  };
-
   useEffect(() => {
     if(gameFinished) {
+      console.log('game finished', points);
       gtm.endGame(points, successfulSongs.length);
     }
   }, [gameFinished, points, successfulSongs.length]);
+  
+  useEffect(() => {
+    if(gameFinished) {
+      console.log('points game finished');
+      if(points > highScore) {
+        console.log('points > highscore');
+        setHighScore(points);
+        localStorage.setItem('highScore', points);
+      }
+    }
+  }, [points, gameFinished, highScore]);
 
   const finishGame = () => {
     setGameFinished(true);
@@ -89,17 +118,21 @@ const Game = (props) => {
     return randomOptions;
   };
 
-  const handleOptionClick = (successful, option, optionNumber, leftTime) => {
-    const songPoints = POINTS_BASE + Math.round(leftTime * POINTS_BASE);
+  const handleOptionClick = (successful, option, optionNumber) => {
+    const leftTime = audioRef.current.duration - audioRef.current.currentTime;
+    let songPoints = 0;
+    audioRef.current.pause();
     if(successful) {
       setSuccessfulSongs([
         ...successfulSongs,
         actualSong,
       ]);
+      songPoints = POINTS_BASE + Math.round(leftTime * POINTS_BASE);
       setPoints(points + songPoints);
     }
     gtm.selectOption(optionNumber, option);
     gtm.endSong(songPoints, successful);
+    console.log('option clicked:', audioRef.current.duration, leftTime, songPoints);
   };
 
   const handleOptionSelect = () => {
@@ -109,11 +142,18 @@ const Game = (props) => {
       setActualLevel(actualLevel + 1);
     } else {
       finishGame();
+      console.log('points before game finished', points);
     }
   };
 
   const handleLoadedSong = () => {
+    setAudioDuration(audioRef.current.duration);
+    audioRef.current.play();
     setLoading(false);
+  };
+
+  const handleTimeUpdate = () => {
+    setAudioCurrentTime(audioRef.current.currentTime);
   };
 
   const handleScoreLoaded = () => {
@@ -123,18 +163,23 @@ const Game = (props) => {
   return (
     <Container>
       {loading && <Loader />}
-      {!gameFinished &&
-        <ActualScore songs={successfulSongs.length} score={points} />
-      }
+      <ActualScore
+        highScore={highScore}
+        songs={successfulSongs.length}
+        score={points}
+        gameFinished={gameFinished}
+      />
       { actualSong && <Song
         song={actualSong}
+        duration={audioDuration}
+        currentTime={audioCurrentTime}
         options={actualOptions}
         onOptionClick={handleOptionClick}
         onOptionSelect={handleOptionSelect}
-        onLoadedSong={handleLoadedSong}
       />}
       {gameFinished &&
         <Score
+          highScore={highScore}
           songs={successfulSongs}
           points={points}
           onLoaded={handleScoreLoaded}

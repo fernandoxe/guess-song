@@ -95,7 +95,11 @@ const Share = (props) => {
     if(canvas.toBlob) {
       canvas.toBlob((blob) => {
         const fileFromBlob = new File([blob], 'results.jpg', {type: 'image/jpeg'});
+        if(navigator.canShare?.({files: [fileFromBlob]})) {
         setFile(fileFromBlob);
+        } else {
+          gtm.sendError('navigator.canShare', 'Navigator can\'t share files');
+        }
       });
     } else {
       gtm.sendError('canvas.toBlob', 'Can\'t create canvas.toBlob');
@@ -114,7 +118,6 @@ const Share = (props) => {
 
   const handleShareClick = () => {
     gtm.share();
-    if(navigator.canShare?.({files: [file]})) {
       navigator.share({
         text: t('My score'),
         files: [file],
@@ -128,9 +131,6 @@ const Share = (props) => {
         console.log(error);
         gtm.sendError('Share', error.message);
       });
-    } else {
-      gtm.sendError('navigator.canShare', `Navigator can't share${navigator.canShare?.() ? '' : ' files'}`);
-    }
   };
 
   const handleSaveScreenshotClick = () => {

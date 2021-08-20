@@ -1,7 +1,13 @@
 export const theme = {
-  primaryColor: '#9d8365',
-  secondaryColor: '#d3c29a',
-  successfulColor: '#66bb6a',
-  errorColor: '#ce0000',
-  textColor: '#e1d3bb',
+  color: {
+    primary: '#9d8365',
+    secondary: '#d3c29a',
+    successful: '#66bb6a',
+    error: '#ce0000',
+    text: '#e1d3bb',
+    background: '#87684c',
+  },
+  font: {
+    family: 'Georama, sans-serif',
+  },
 };

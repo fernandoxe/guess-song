@@ -4,6 +4,7 @@ import Button from '../Button';
 import { gtm } from '../../services';
 import { useTranslation } from 'react-i18next';
 import background from '../../img/background.jpg';
+import { theme } from '../../theme';
 
 const Container = styled.div`
   display: flex;
@@ -39,27 +40,27 @@ const writeCanvas = (canvas, songs, image, guessedText, pointsText) => {
   let textY = lineSize + titleSize;
   canvas.width = 720;
   canvas.height = lineSize + titleSize + lineSize + pointsSize + lineSize + songs.length * lineSize + lineSize * 2;
-  ctx.fillStyle = '#85674d';
+  ctx.fillStyle = theme.color.background;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.drawImage(image, 0, -148, 720, 1280);
 
-  ctx.font = `bold ${titleSize}px Georama, sans-serif`;
+  ctx.font = `bold ${titleSize}px ${theme.font.family}`;
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#e1d3bb';
+  ctx.fillStyle = theme.color.text;
   ctx.fillText(guessedText,
     canvas.width / 2,
     textY
   );
 
-  ctx.font = `bold ${pointsSize}px Georama, sans-serif`;
+  ctx.font = `bold ${pointsSize}px ${theme.font.family}`;
   textY += lineSize + pointsSize;
   ctx.fillText(pointsText,
     canvas.width / 2,
     textY
   );
 
-  ctx.font = `italic ${songSize}px Georama, sans-serif`;
+  ctx.font = `italic ${songSize}px ${theme.font.family}`;
   textY += lineSize;
   for (let i = 0; i < songs.length; i++) {
     const song = songs[i];

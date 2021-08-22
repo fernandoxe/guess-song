@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Container = styled.div`
   .button {
-    border: none;
+    border: ${props => props.theme.button.border};
     padding: 0.5rem 1rem;
     font-weight: bold;
     white-space: nowrap;
@@ -11,10 +11,10 @@ const Container = styled.div`
     text-overflow: ellipsis;
     background-color: ${props => props.theme.color.primary};
     font-family: inherit;
-    color: inherit;
+    color: ${props => props.theme.color.textButton};
     font-style: italic;
     font-size: 1.125rem;
-    box-shadow: 1px 1px 4px 1px rgba(0, 0, 0, 0.2);
+    box-shadow: ${props => props.theme.button.boxShadow};
   }
   .option {
     width: 100%;
@@ -22,12 +22,15 @@ const Container = styled.div`
   .normal {
     background-color: ${props => props.theme.color.secondary};
     color: ${props => props.theme.color.primary};
+    border-color: ${props => props.theme.color.buttonBorder};
   }
   .correct {
     background-color: ${props => props.theme.color.successful};
+    color: ${props => props.theme.color.textButton};
   }
   .incorrect {
     background-color: ${props => props.theme.color.error};
+    color: ${props => props.theme.color.textButton};
   }
 `;
 

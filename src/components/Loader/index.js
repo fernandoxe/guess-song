@@ -19,13 +19,12 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #85674d;
-    background: #85674d url(${background}) 53% center/cover no-repeat fixed;
+    background: ${props => props.theme.color.background} url(${background}) 53% center/cover no-repeat fixed;
   .circle {
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    border: 0.4rem solid #e1d3bb;
+    border: 0.4rem solid ${props => props.theme.color.text};
     border-top: 0.4rem solid transparent;
     animation: ${rotate} 0.7s linear infinite;
   }

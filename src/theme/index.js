@@ -7,7 +7,13 @@ export const theme = {
     text: '#e1d3bb',
     textButton: '#e1d3bb',
     background: '#87684c',
+    backgroundButton: '#9d8365',
+    backgroundNormalButton: '#d3c29a',
     buttonBorder: 'none',
+    normalButtonText: '#9d8365',
+    correctButtonText: '#e1d3bb',
+    incorrectButtonText: '#e1d3bb',
+    loader: '#e1d3bb',
   },
   font: {
     family: '\'Georama\', sans-serif',

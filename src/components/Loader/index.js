@@ -24,7 +24,7 @@ const Container = styled.div`
     width: 3rem;
     height: 3rem;
     border-radius: 50%;
-    border: 0.4rem solid ${props => props.theme.color.text};
+    border: 0.4rem solid ${props => props.theme.color.loader};
     border-top: 0.4rem solid transparent;
     animation: ${rotate} 0.7s linear infinite;
   }

@@ -9,7 +9,7 @@ const Container = styled.div`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: ${props => props.theme.color.primary};
+    background-color: ${props => props.theme.color.backgroundButton};
     font-family: inherit;
     color: ${props => props.theme.color.textButton};
     font-style: italic;
@@ -20,17 +20,17 @@ const Container = styled.div`
     width: 100%;
   }
   .normal {
-    background-color: ${props => props.theme.color.secondary};
-    color: ${props => props.theme.color.primary};
+    background-color: ${props => props.theme.color.backgroundNormalButton};
+    color: ${props => props.theme.color.normalButtonText};
     border-color: ${props => props.theme.color.buttonBorder};
   }
   .correct {
     background-color: ${props => props.theme.color.successful};
-    color: ${props => props.theme.color.textButton};
+    color: ${props => props.theme.color.correctButtonText};
   }
   .incorrect {
     background-color: ${props => props.theme.color.error};
-    color: ${props => props.theme.color.textButton};
+    color: ${props => props.theme.color.incorrectButtonText};
   }
 `;
 
